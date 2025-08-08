@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.team.mapper.UserMapper">
+
+    <insert id="createUser" parameterType="com.spring.team.dto.UserDTO">
+            INSERT INTO `USER`(id,pwd,nicknmame,email,imgNm,user_role
+            <if test="provider != null">,provider</if>
+        )
+             VALUES(#{username},#{password},#{nickNm},#{email},#{profile},#{role}
+            <if test="provider != null">,#{provider}</if>)
+    </insert>
+
+    <resultMap id="resultMap" type="com.spring.team.dto.UserDTO">
+        <result property="userId" column="user_id"/>
+        <result property="username" column="id"/>
+        <result property="password" column="pwd"/>
+        <result property="role" column="user_role"/>
+        <result property="profile" column="imgNm"/>
+        <result property="provider" column="provider"/>
+        <result property="nickNm" column="nicknmame"/>
+    </resultMap>
+
+    <select id="findUser" parameterType="String" resultMap="resultMap">
+        SELECT user_id,id,pwd,user_role,imgNm,nicknmame, provider FROM USER WHERE id = #{id}
+    </select>
+
+    <insert id="insertInterested" parameterType="com.spring.team.dto.UserDTO">
+        INSERT INTO INTERESTED(USER_ID,MOVIE_ID,MEDIA_TYPE) VALUES(#{userId},#{movieId},#{mediaType})
+    </insert>
+
+    <select id="findUserPk" parameterType="String" resultType="Integer">
+        SELECT USER_ID FROM USER WHERE ID = #{username}
+    </select>
+    
+    <insert id="insertEvaluate" parameterType="com.spring.team.dto.UserDTO">
+            INSERT INTO EVALUATE(USER_ID,MOVIE_ID,GENRE,MEDIA_TYPE,
+            <trim suffix=")" suffixOverrides=",">
+                <if test="evaluate == 'like'">e_like,</if>
+                <if test="evaluate == 'dislike'">e_dislike,</if>
+            </trim>
+            VALUES(#{userId},#{movieId},#{genre},#{mediaType},
+            <trim suffix=")" suffixOverrides=",">
+                <if test="evaluate == 'like'">'1',</if>
+                <if test="evaluate == 'dislike'">'1',</if>
+            </trim>
+    </insert>
+
+    <insert id="streaming" parameterType="com.spring.team.dto.UserDTO">
+        INSERT INTO streaming
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+        user_id,movie_id,watched_time,runingTime,
+            <if test="epi !=0" >choose_episode</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+        #{userId},#{movieId},#{time},#{runTime},
+            <if test="epi != 0">#{epi}</if>
+        </trim>
+    </insert>
+    <resultMap id="streamingMap" type="com.spring.team.dto.UserDTO">
+        <result property="time" column="watched_time"/>
+        <result property="runTime" column="runingTime"/>
+    </resultMap>
+
+    <select id="getMovieStreamingTime" parameterType="com.spring.team.dto.UserDTO" resultMap="streamingMap">
+        SELECT watched_time,runingTime FROM streaming WHERE movie_id = #{movieId} AND user_id=#{userId}
+    </select>
+
+    <update id="updateStreamingTime" parameterType="com.spring.team.dto.UserDTO">
+        UPDATE streaming SET watched_time=${time} WHERE movie_id =${movieId} AND user_id=${userId}
+    </update>
+    <delete id="deleteEvaluate" >
+        delete from evaluate where user_id=#{userId} and movie_id=#{movieId}
+    </delete>
+    <select id="existentEvaluate" resultType="int">
+        SELECT evaluate_id FROM EVALUATE WHERE MOVIE_ID =#{movieId} AND USER_ID =#{userId}
+    </select>
+    <update id="updateEvaluate" parameterType="com.spring.team.dto.UserDTO">
+        UPDATE EVALUATE SET 
+        <if test="evaluate == 'like'">e_dislike</if>
+        <if test="evaluate == 'dislike'">e_like</if>
+        = 0 ,
+        <if test="evaluate == 'like'">e_like</if>
+        <if test="evaluate == 'dislike'">e_dislike</if>
+        =1 WHERE evaluate_id =#{evaluateId}
+    </update>
+    <select id="duplicatedInterest" resultType="int">
+        SELECT iterested_id FROM INTERESTED WHERE USER_ID=#{userId} AND MOVIE_ID=#{movieId}
+    </select>
+    <delete id="deleteInterest">
+        DELETE FROM INTERESTED WHERE iterested_id = #{interestedId}
+    </delete>
+    <!--페이지에서 찜,평가 정보를 가지고 옴-->
+    <select id="getInterestedWithEvaluate" resultType="com.spring.team.dto.ModalDTO">
+        select  i.iterested_id,j.e_dislike,j.e_like from  interested i
+        left join evaluate j on i.user_id = j.user_id and i.movie_id = j.movie_id where i.movie_id =#{movieId}and i.user_id=#{userId}
+        UNION all
+        select  NULL,e_dislike,e_like from evaluate where movie_id =#{movieId} and user_id=#{userId}
+    </select>
+    
+    <select id="totalProfile" resultType="com.spring.team.dto.ProfileDTO">
+        select * from v_profile where user_id =#{user_id}
+    </select>
+    <update id="updateProfile" parameterType="com.spring.team.dto.ProfileDTO">
+    UPDATE user SET nicknmame =#{nicknmame},email=#{email},imgNm=#{imgNm}, pwd=#{pwd} WHERE user_id =#{user_id}
+    </update>
+    <select id="countEvaluate" resultType="com.spring.team.dto.CountDTO">
+        select movie_id,genre,media_type from evaluate  where (select count(*) from evaluate group by user_id having user_id=#{userId}) >5 and user_id=#{userId} ;
+    </select>
+    <select id="fineEmail" resultType="com.spring.team.dto.UserDTO">
+        SELECT email FROM USER WHERE EMAIL = #{email}
+    </select>
+
+    <select id="findInterested" resultType="com.spring.team.dto.InterestedDTO">
+        SELECT * FROM interested WHERE USER_ID = (select USER_ID FROM USER WHERE ID = #{username})
+    </select>
+    <delete id="deleteUser" >
+      DELETE FROM USER WHERE user_id =#{userId}
+    </delete>
+    <select id="findPwd" resultType="String">
+        SELECT pwd FROM user WHERE USER_ID = #{userId}
+    </select>
+    <select id="findChatUser" resultType="com.spring.team.dto.ProfileDTO">
+        SELECT nicknmame,imgNm from USER WHERE USER_ID =  (select user_id from user where id = #{username})
+    </select>
+</mapper>

@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+pydantic
+transformers
+torch
+tokenizers
+accelerate
+bitsandbytes
+sentencepiece
+python-multipart
+python-dotenv
+httpx

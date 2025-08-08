@@ -1,0 +1,21 @@
+# Web Framework
+fastapi
+uvicorn[standard]
+
+# Data Validation
+pydantic
+
+# HTTP Client
+httpx
+
+# Database/Cache
+redis
+
+# File Upload Support
+python-multipart
+
+# Configuration
+python-dotenv
+
+# File Operations
+aiofiles 

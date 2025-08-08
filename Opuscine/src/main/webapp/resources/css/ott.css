@@ -1,0 +1,852 @@
+/* OTT 통합 기능 스타일 */
+
+.ott-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.ott-dropdown-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.ott-dropdown-header:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+.ott-dropdown.active .ott-dropdown-header {
+    border-radius: 6px 6px 0 0;
+}
+
+.ott-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 0 0 6px 6px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    min-width: 180px; /* 너비 조정 */
+    padding: 4px 0; /* 패딩 축소 */
+}
+
+.ott-dropdown-menu a {
+    padding: 6px 12px; /* 패딩 축소 */
+    display: flex; /* Flex 컨테이너로 변경 */
+    align-items: center; /* 세로 중앙 정렬 */
+    white-space: nowrap; /* 한 줄로 표시 */
+    overflow: hidden; /* 넘치는 내용 숨김 */
+    text-overflow: ellipsis; /* 넘치는 텍스트에 ... 표시 */
+    font-size: 14px; /* 글씨 크기 축소 */
+    gap: 8px; /* 아이콘과 텍스트 사이 간격 */
+}
+
+.ott-dropdown-menu img {
+    width: 16px; /* 아이콘 크기 조정 */
+    height: 16px;
+    object-fit: contain;
+}
+
+.ott-dropdown.active .ott-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.ott-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: background 0.2s ease;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.ott-option:last-child {
+    border-bottom: none;
+}
+
+.ott-option:hover {
+    background: var(--hover-bg);
+}
+
+.ott-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    flex-shrink: 0;
+}
+
+/* OTT 프로바이더별 로고 스타일 - 실제 이미지 사용 */
+.ott-logo-netflix {
+    background-image: url('../logo/netflix.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.ott-logo-disney {
+    background-image: url('../logo/disneyplus.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.ott-logo-amazon {
+    background-image: url('../logo/amazon.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.ott-logo-apple {
+    background-image: url('../logo/apple.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.ott-logo-wavve {
+    background-image: url('../logo/wavve.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.ott-logo-tving {
+    background-image: url('../logo/tving.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.ott-logo-watcha {
+    background-image: url('../logo/watcha.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.ott-logo-coupang {
+    background-image: url('../logo/coupang.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 로컬 이미지가 없는 프로바이더들은 기존 텍스트 방식 유지 */
+.ott-logo-youtube {
+    background: linear-gradient(135deg, #FF0000, #cc0000);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 7px;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(255, 0, 0, 0.3);
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.ott-logo-youtube::before {
+    content: 'YT';
+    color: white;
+}
+
+.ott-logo-hulu {
+    background: linear-gradient(135deg, #3DBB3D, #2ea82e);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 8px;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(61, 187, 61, 0.3);
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.ott-logo-hulu::before {
+    content: 'H';
+    color: white;
+}
+
+.ott-logo-default {
+    background-color: #666;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 8px;
+}
+.ott-logo-default::before {
+    content: '?';
+    color: white;
+}
+
+/* OTT 미제공 버튼 스타일 */
+.btn-no-ott {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: #666;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* OTT 로딩 상태 스타일 */
+.btn-ott-loading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: #888;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: wait;
+    opacity: 0.8;
+}
+
+.btn-ott-error {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+.ott-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: rgba(0, 0, 0, 0.8);
+    color: var(--primary-color);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.movie-item:hover .ott-badge {
+    opacity: 1;
+}
+
+.ott-hover-info {
+    position: absolute;
+    bottom: 60px;
+    left: 8px;
+    right: 8px;
+    background: rgba(0, 0, 0, 0.9);
+    padding: 8px;
+    border-radius: 6px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.movie-item:hover .ott-hover-info {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.ott-provider {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 4px;
+    font-size: 11px;
+    color: white;
+}
+
+.ott-provider:last-child {
+    margin-bottom: 0;
+}
+
+.ott-provider img {
+    width: 16px;
+    height: 16px;
+    border-radius: 2px;
+}
+
+.ott-info {
+    margin-top: 4px;
+}
+
+.ott-available {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--primary-color);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .ott-dropdown-menu {
+        min-width: 180px;
+    }
+    
+    .ott-option {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+}
+
+/* 채팅창 스타일 */
+.chat-input-section {
+    margin-top: 24px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.chat-input-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--surface-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 25px;
+    padding: 8px;
+    transition: border-color 0.3s ease;
+}
+
+.chat-input-container:focus-within {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.1);
+}
+
+.chat-input-container input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 12px 16px;
+    color: var(--text-primary);
+    font-size: 16px;
+    outline: none;
+    resize: none;
+}
+
+.chat-input-container input::placeholder {
+    color: var(--text-secondary);
+}
+
+.chat-send-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--primary-color);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+}
+
+.chat-send-btn:hover {
+    background: var(--primary-hover);
+    transform: scale(1.05);
+}
+
+.chat-send-btn:disabled {
+    background: var(--text-tertiary);
+    cursor: not-allowed;
+    transform: none;
+}
+
+.send-icon {
+    font-size: 16px;
+    transform: rotate(0deg);
+    transition: transform 0.3s ease;
+}
+
+.chat-send-btn:hover .send-icon {
+    transform: rotate(0deg) scale(1.1);
+}
+
+/* 채팅 대화창 스타일 */
+.chat-conversation {
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+    background: var(--surface-bg);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) transparent;
+}
+
+.chat-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+    background: var(--text-tertiary);
+}
+
+/* 메시지 스타일 */
+.chat-message {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 80%;
+    animation: fadeInUp 0.3s ease;
+}
+
+.chat-message.user {
+    align-self: flex-end;
+    align-items: flex-end;
+}
+
+.chat-message.assistant {
+    align-self: flex-start;
+    align-items: flex-start;
+}
+
+.message-content {
+    padding: 16px 20px;
+    border-radius: 18px;
+    font-size: 15px;
+    line-height: 1.5;
+    word-wrap: break-word;
+    white-space: pre-line; /* 줄바꿈 문자를 실제 줄바꿈으로 표시 */
+    position: relative;
+}
+
+.chat-message.user .message-content {
+    background: var(--primary-color);
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+.chat-message.assistant .message-content {
+    background: var(--card-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-bottom-left-radius: 4px;
+}
+
+.message-timestamp {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    margin: 0 8px;
+}
+
+/* 로딩 메시지 */
+.loading-message {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    border-bottom-left-radius: 4px;
+    max-width: 200px;
+}
+
+.loading-dots {
+    display: flex;
+    gap: 4px;
+}
+
+.loading-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--text-secondary);
+    border-radius: 50%;
+    opacity: 0.4;
+    animation: loadingPulse 1.5s infinite ease-in-out;
+}
+
+.loading-dot:nth-child(1) { animation-delay: 0s; }
+.loading-dot:nth-child(2) { animation-delay: 0.2s; }
+.loading-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes loadingPulse {
+    0%, 80%, 100% {
+        opacity: 0.4;
+        transform: scale(0.8);
+    }
+    40% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 영화 추천 로딩 상태 */
+.movies-loading {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-secondary);
+}
+
+.movies-loading .loading-spinner {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    border: 3px solid rgba(229, 9, 20, 0.1);
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 16px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .chat-conversation {
+        height: 400px;
+    }
+    
+    .chat-message {
+        max-width: 90%;
+    }
+    
+    .chat-messages {
+        padding: 16px;
+        gap: 12px;
+    }
+    
+    .message-content {
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+    
+    .chat-input-container input {
+        font-size: 16px; /* iOS에서 줌 방지 */
+    }
+}
+
+/* 필터 관련 스타일 */
+.filter-reset-btn {
+    background: linear-gradient(135deg, #64748b, #475569);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: all 0.3s ease;
+}
+
+.filter-reset-btn:hover {
+    background: linear-gradient(135deg, #475569, #334155);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(100, 116, 139, 0.4);
+}
+
+.filter-reset-btn:active {
+    transform: translateY(0);
+}
+
+/* 필터 메시지 스타일 */
+.filter-message {
+    padding: 12px 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    animation: slideInFromTop 0.3s ease-out;
+}
+
+.filter-message.success {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    border-left: 4px solid #047857;
+}
+
+.filter-message.error {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    border-left: 4px solid #b91c1c;
+}
+
+.filter-message.info {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    border-left: 4px solid #1d4ed8;
+}
+
+@keyframes slideInFromTop {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 필터 로딩 스타일 */
+.filter-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.filter-loading .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(99, 102, 241, 0.3);
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+.filter-loading p {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* 필터 에러 스타일 */
+.filter-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.filter-error .error-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+    opacity: 0.6;
+}
+
+.filter-error p {
+    margin: 0 0 20px 0;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.filter-error .retry-btn {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-error .retry-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+}
+
+/* 랭킹 로딩 스타일 */
+.ranking-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.ranking-loading .loading-spinner {
+    width: 30px;
+    height: 30px;
+    border: 2px solid rgba(99, 102, 241, 0.3);
+    border-top: 2px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+.ranking-loading p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* 영화 로딩 스타일 (AI 추천 페이지용) */
+.movies-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+    color: var(--text-secondary);
+    background: rgba(15, 23, 42, 0.5);
+    border-radius: 12px;
+    margin: 20px 0;
+}
+
+.movies-loading .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(99, 102, 241, 0.3);
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+.movies-loading p {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* 필터 적용 버튼 호버 효과 개선 */
+.filter-apply-btn:hover {
+    background: linear-gradient(135deg, #5b21b6, #7c3aed);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+}
+
+/* 필터 탭 호버 효과 개선 */
+.filter-tab:hover:not(.active) {
+    background: rgba(99, 102, 241, 0.2);
+    color: var(--primary-color);
+}
+
+.filter-type:hover:not(.active) {
+    background: rgba(99, 102, 241, 0.2);
+    color: var(--primary-color);
+}
+
+/* 반응형 필터 메시지 */
+@media (max-width: 768px) {
+    .filter-message {
+        margin: 15px 10px;
+        font-size: 13px;
+        padding: 10px 15px;
+    }
+    
+    .filter-loading,
+    .filter-error,
+    .movies-loading {
+        padding: 40px 15px;
+    }
+    
+    .filter-loading p,
+    .filter-error p,
+    .movies-loading p {
+        font-size: 14px;
+    }
+}
+
+/* 더 보기 버튼 로딩 상태 */
+.load-more-btn:disabled {
+    background: rgba(100, 116, 139, 0.5);
+    cursor: not-allowed;
+    transform: none;
+}
+
+.load-more-btn:disabled:hover {
+    background: rgba(100, 116, 139, 0.5);
+    transform: none;
+    box-shadow: none;
+}

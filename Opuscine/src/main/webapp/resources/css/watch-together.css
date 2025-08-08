@@ -1,0 +1,432 @@
+.watch-together-container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    background-color: #141414;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 비디오 섹션 스타일 수정 */
+.video-section {
+    position: relative;
+    flex-grow: 1; /* flex-grow를 사용하여 남은 공간을 차지하도록 함 */
+    width: auto; /* width를 auto로 설정하여 flex-grow가 제대로 작동하게 함 */
+    height: 100%;
+    background: #000;
+    transition: all 0.3s ease; /* all을 사용하여 모든 변화에 트랜지션 적용 */
+}
+
+/* 비디오 오버레이 스타일 */
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 20%, transparent 80%, rgba(0,0,0,0.7) 100%);
+    z-index: 100;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    pointer-events: none; /* 오버레이 자체는 마우스 이벤트를 무시 */
+}
+
+.video-overlay.hidden {
+    opacity: 0;
+}
+
+/* 상단 컨트롤 */
+.top-controls {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    pointer-events: auto; /* 버튼 클릭 가능하도록 설정 */
+}
+
+.home-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    border-radius: 4px;
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background 0.2s ease;
+}
+
+.home-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.home-button svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* 하단 컨트롤 */
+.bottom-controls {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    pointer-events: auto; /* 버튼 클릭 가능하도록 설정 */
+}
+
+.fullscreen-button {
+    background: transparent;
+    border: none;
+    padding: 8px;
+    color: white;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+}
+
+.fullscreen-button:hover {
+    opacity: 1;
+}
+
+.fullscreen-button svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* 비디오 섹션이 전체 화면일 때 */
+.video-section.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    width: 100vw !important;
+    height: 100vh !important;
+}
+
+.video-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+#player {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* 채팅 섹션 스타일 수정 */
+.chat-section {
+    position: relative;
+    width: 350px;
+    min-width: 350px;
+    background: #1a1a1a;
+    transform: translateX(0);
+    transition: transform 0.3s ease, margin-right 0.3s ease;
+    margin-right: 0;
+    overflow: visible; /* 알림이 섹션 밖으로 나갈 수 있도록 설정 */
+}
+
+.chat-section.collapsed {
+    transform: translateX(350px);
+    margin-right: -350px; /* 채팅창이 닫힐 때 마진을 이용해 공간 제거 */
+}
+
+/* 토글 버튼 스타일 수정 */
+.chat-toggle-btn {
+    position: fixed; /* absolute에서 fixed로 변경 */
+    right: 0; /* left 대신 right 사용 */
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(26, 26, 26, 0.9);
+    border: none;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px 0 0 5px;
+    z-index: 1000; /* z-index 증가 */
+    transition: all 0.3s ease;
+}
+
+/* 채팅창이 열려있을 때 토글 버튼 위치 */
+.chat-section:not(.collapsed) + .chat-toggle-btn {
+    right: 350px;
+}
+
+/* 채팅창이 닫혀있을 때 토글 버튼 위치 */
+.chat-section.collapsed + .chat-toggle-btn {
+    right: 0;
+}
+
+.chat-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.chat-header {
+    padding: 15px;
+    background: #252525;
+    border-bottom: 1px solid #333;
+}
+
+.chat-header h2 {
+    margin: 0;
+    color: white;
+    font-size: 1.2em;
+}
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+}
+
+/* 기본 채팅 메시지 스타일 */
+.chat-message {
+    display: flex;
+    margin-bottom: 15px;
+    gap: 10px;
+    width: 100%;
+}
+
+/* 다른 사람의 메시지 (왼쪽 정렬) */
+.chat-message.other-message {
+    justify-content: flex-start;
+}
+
+/* 내 메시지 (오른쪽 정렬) */
+.chat-message.my-message {
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+}
+
+.user-avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.message-content {
+    flex: 0 1 auto;
+    max-width: 70%;
+}
+
+/* 다른 사람의 메시지 내용 스타일 */
+.other-message .message-content {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px 12px 12px 0;
+    padding: 10px 15px;
+}
+
+/* 내 메시지 내용 스타일 */
+.my-message .message-content {
+    background: rgba(229, 9, 20, 0.2);
+    border-radius: 12px 12px 0 12px;
+    padding: 10px 15px;
+}
+
+.message-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+/* 다른 사람의 메시지 헤더 정렬 */
+.other-message .message-header {
+    justify-content: flex-start;
+}
+
+/* 내 메시지 헤더 정렬 */
+.my-message .message-header {
+    justify-content: flex-end;
+}
+
+.user-name {
+    color: #e5e5e5;
+    font-weight: bold;
+}
+
+.message-time {
+    color: #737373;
+    font-size: 0.8em;
+}
+
+/* 다른 사람의 메시지 텍스트 정렬 */
+.other-message .message-text {
+    text-align: left;
+}
+
+/* 내 메시지 텍스트 정렬 */
+.my-message .message-text {
+    text-align: right;
+}
+
+.message-text {
+    color: #e5e5e5;
+    margin: 0;
+    word-break: break-word;
+    line-height: 1.4;
+}
+
+/* 이모티콘 섹션 스타일 */
+.emoji-section {
+    padding: 10px;
+    background: #2a2a2a; /* 채팅 입력 영역과 구분되는 더 어두운 색상 */
+    border-top: 1px solid #333;
+}
+
+.emoji-list {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 10px;
+}
+
+.emoji {
+    font-size: 24px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+}
+
+.emoji:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.1);
+}
+
+.emoji:active {
+    transform: scale(0.95);
+}
+
+/* 채팅 입력 영역 스타일 수정 */
+.chat-input-area {
+    padding: 15px;
+    background: #252525; /* 이모티콘 영역과 구분되는 밝은 색상 */
+    border-top: 1px solid #333;
+    display: flex;
+    gap: 10px;
+}
+
+#chatInput {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background: #1a1a1a;
+    color: white;
+}
+
+#sendMessage {
+    padding: 10px 20px;
+    background: #e50914;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+}
+
+#sendMessage:hover {
+    background: #f40612;
+}
+
+/* 스크롤바 스타일링 */
+.chat-messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: #1a1a1a;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 4px;
+}
+
+/* 채팅 알림 스타일 */
+/* 
+ * 1. 채팅 입력창 위에 알림이 표시됨
+ * 2. 알림은 3초 후 자동으로 사라짐
+ * 3. 부드러운 슬라이드 인/아웃 애니메이션 적용
+ * 4. 그라데이션 배경과 그림자 효과로 시각적 강조
+ */
+.chat-notification {
+    position: absolute;
+    bottom: 80px; /* 채팅 입력창 위에 위치 */
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #4B0082, #0000FF);
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 9999;
+    animation: slideInOut 3s ease-in-out forwards;
+    width: calc(100% - 40px);
+    max-width: 300px;
+}
+
+.chat-notification .user-avatar {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.chat-notification .user-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    object-fit: cover;
+}
+
+.chat-notification .notification-content {
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    word-break: break-word;
+    flex: 1;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* 알림 슬라이드 인/아웃 애니메이션 */
+@keyframes slideInOut {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, 50px);
+    }
+    15% {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+    85% {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, 50px);
+    }
+}

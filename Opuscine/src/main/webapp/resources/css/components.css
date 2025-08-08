@@ -1,0 +1,1666 @@
+/* 버튼 컴포넌트 */
+.btn {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    min-width: 120px; /* 최소 너비 추가 */
+    justify-content: center; /* 중앙 정렬 */
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn-play {
+    background: var(--gradient-primary);
+    color: white;
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-play:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-xl);
+}
+
+.btn-info {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.btn-info:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+/* 모달 버튼 스타일 통일 */
+.modal-btn {
+    position: relative;
+    transition: all 0.3s ease;
+    flex: 1; /* 버튼들이 동일한 너비를 가지도록 */
+    max-width: 200px; /* 최대 너비 제한 */
+    min-width: 120px; /* 최소 너비 설정 */
+    justify-content: center;
+    padding: 12px 20px;
+}
+
+.btn-wishlist {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.btn-wishlist:hover {
+    background: rgba(255, 193, 7, 0.1);
+    border-color: rgba(255, 193, 7, 0.3);
+    color: #ffc107;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 193, 7, 0.2);
+}
+
+.btn-like {
+    background: rgba(16, 185, 129, 0.2);
+    color: var(--success-color);
+    border: 1px solid var(--success-color);
+    transition: all 0.3s ease;
+}
+
+.btn-like:hover:not(.active) {
+    background: rgba(16, 185, 129, 0.1);
+    border-color: rgba(16, 185, 129, 0.3);
+    color: #10b981;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.2);
+}
+
+.btn-dislike {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--error-color);
+    border: 1px solid var(--error-color);
+    transition: all 0.3s ease;
+}
+
+.btn-dislike:hover:not(.active) {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.2);
+}
+
+.btn-watch-together {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.btn-watch-together:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+/* 모달 컴포넌트 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    position: relative;
+    margin: 2% auto;
+    width: 90%;
+    max-width: 1200px;
+    max-height: 90vh;
+    background: var(--bg-secondary);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow-xl);
+    animation: slideInUp 0.4s ease;
+}
+
+.modal-header {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+}
+
+.modal-close {
+    background: rgba(0, 0, 0, 0.7);
+    border: none;
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+    background: rgba(0, 0, 0, 0.9);
+    transform: scale(1.1);
+}
+
+.modal-body {
+    overflow-y: auto;
+    max-height: 90vh;
+}
+
+/* 영화/TV 백드롭 */
+.movie-backdrop {
+    position: relative;
+    height: 500px;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #000;
+}
+
+.movie-backdrop img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.backdrop-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(transparent 0%, rgba(26, 26, 46, 0.8) 70%, var(--bg-secondary) 100%);
+}
+
+/* 트레일러 iframe 스타일 */
+.trailer-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 104%;
+    height: 104%;
+    border: none;
+    border-radius: 0;
+    z-index: 2;
+    object-fit: cover;
+    object-position: center;
+    image-rendering: crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    backface-visibility: hidden;
+    transform: translateZ(0) scale(1.1);
+    will-change: transform;
+    filter: contrast(1.15) brightness(1.05) saturate(1.1);
+    transform-style: preserve-3d;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+    min-width: 104%;
+    min-height: 104%;
+}
+
+.iframe-click-blocker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    background: transparent;
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+/* 미디어 상세 정보 */
+.movie-details {
+    display: flex;
+    gap: 40px;
+    padding: 40px;
+    margin-top: -100px;
+    position: relative;
+    z-index: 2;
+}
+
+.movie-poster-section {
+    flex-shrink: 0;
+}
+
+.movie-poster-section img {
+    width: 300px;
+    height: 450px;
+    object-fit: cover;
+    border-radius: 16px;
+    box-shadow: var(--shadow-xl);
+}
+
+.movie-info-section {
+    flex: 1;
+    padding-top: 100px;
+}
+
+.movie-info-section h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+.movie-meta {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.meta-item {
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.meta-item.rating {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+.meta-item.status {
+    background: var(--gradient-accent);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+.movie-genres {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.genre-tag {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-accent);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.movie-overview {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+}
+
+.movie-actions {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    align-items: center; /* 버튼들을 세로 중앙 정렬 */
+}
+
+.movie-additional-info {
+    border-top: 1px solid var(--border-color);
+    padding-top: 24px;
+}
+
+.info-row {
+    display: flex;
+    margin-bottom: 12px;
+    gap: 16px;
+}
+
+.info-label {
+    color: var(--text-muted);
+    font-weight: 600;
+    min-width: 80px;
+    font-size: 14px;
+}
+
+.info-value {
+    color: var(--text-secondary);
+    font-size: 14px;
+    flex: 1;
+}
+
+/* TV 시리즈 시즌 & 에피소드 섹션 */
+.seasons-episodes-section {
+    padding: 40px;
+    border-top: 1px solid var(--border-color);
+    background: var(--bg-tertiary);
+}
+
+.seasons-episodes-section h2 {
+    color: var(--text-primary);
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+}
+
+.seasons-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.season-section {
+    background: var(--bg-card);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.season-section:hover {
+    border-color: var(--primary-color);
+}
+
+.season-header {
+    background: var(--bg-secondary);
+    padding: 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+.season-header:hover {
+    background: var(--bg-tertiary);
+}
+
+.season-header h3 {
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.season-info {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.season-year {
+    color: var(--text-muted);
+}
+
+.expand-icon {
+    color: var(--primary-color);
+    font-size: 12px;
+    transition: transform 0.3s ease;
+}
+
+.season-section.expanded .expand-icon {
+    transform: rotate(180deg);
+}
+
+.season-overview {
+    padding: 0 20px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.season-section.expanded .season-overview {
+    max-height: 200px;
+    padding: 20px;
+}
+
+.episodes-list {
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.season-section.expanded .episodes-list {
+    max-height: 600px;
+    padding: 0 20px 20px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) var(--bg-secondary);
+}
+
+.season-section.expanded .episodes-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.season-section.expanded .episodes-list::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+    border-radius: 3px;
+}
+
+.season-section.expanded .episodes-list::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 3px;
+}
+
+.season-section.expanded .episodes-list::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-hover);
+}
+
+.episode-item {
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+    background: var(--bg-primary);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.episode-item:hover {
+    background: var(--bg-tertiary);
+    transform: translateY(-2px);
+}
+
+.episode-number {
+    background: var(--primary-color);
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+.episode-still {
+    position: relative;
+    width: 150px;
+    height: 85px;
+    flex-shrink: 0;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.episode-still img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.episode-runtime {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 500;
+}
+
+.episode-info {
+    flex: 1;
+}
+
+.episode-title {
+    color: var(--text-primary);
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    line-height: 1.3;
+}
+
+.episode-overview {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.episode-meta {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.episode-date {
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+.episode-rating {
+    color: var(--warning-color);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* 장르 태그 */
+.genre-tag {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-accent);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 메시지 알림 */
+.message {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    padding: 16px 20px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 500;
+    z-index: 10001;
+    animation: slideInRight 0.3s ease;
+    box-shadow: var(--shadow-lg);
+}
+
+.message.success {
+    background: var(--success-color);
+}
+
+.message.error {
+    background: var(--error-color);
+}
+
+.message.info {
+    background: var(--primary-color);
+}
+
+/* 미디어 타입 배지 */
+.media-type-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    z-index: 5;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .movie-details {
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+        margin-top: -50px;
+    }
+
+    .movie-poster-section img {
+        width: 200px;
+        height: 300px;
+        margin: 0 auto;
+        display: block;
+    }
+
+    .movie-info-section {
+        padding-top: 20px;
+    }
+
+    .movie-info-section h1 {
+        font-size: 1.8rem;
+    }
+
+    .episode-item {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .episode-still {
+        width: 100%;
+        height: 150px;
+    }
+
+    .seasons-episodes-section {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 5% auto;
+    }
+
+    .movie-actions {
+        flex-direction: column;
+    }
+
+    .episode-overview {
+        -webkit-line-clamp: 3;
+    }
+}
+
+/* 검색 모달 */
+.search-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 10000;
+    backdrop-filter: blur(10px);
+}
+
+.search-modal.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+.search-modal-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.search-header {
+    padding: 60px 4% 40px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.search-input-container {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.search-input-container input {
+    width: 100%;
+    padding: 20px 60px 20px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    font-size: 18px;
+    outline: none;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.search-input-container input:focus {
+    border-color: var(--primary-color);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.search-input-container input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.search-close {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.3s ease;
+}
+
+.search-close:hover {
+    color: white;
+}
+
+.search-results {
+    flex: 1;
+    padding: 40px 4%;
+    overflow-y: auto;
+}
+
+.search-suggestions h3 {
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.suggestion-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 40px;
+}
+
+.suggestion-tag {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.suggestion-tag:hover {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    transform: translateY(-1px);
+}
+
+.search-content {
+    animation: fadeIn 0.5s ease;
+}
+
+.search-results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.search-result-item {
+    background: var(--bg-card);
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.search-result-item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+}
+
+.search-result-poster {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.search-result-item:hover .search-result-poster {
+    transform: scale(1.05);
+}
+
+.search-result-info {
+    padding: 16px;
+}
+
+.search-result-title {
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.search-result-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.search-result-year {
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.search-result-rating {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.search-result-type {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.search-no-results {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 18px;
+    margin-top: 60px;
+}
+
+.search-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+}
+
+.search-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* 검색 모달 반응형 */
+@media (max-width: 768px) {
+    .search-header {
+        padding: 40px 20px 30px;
+    }
+    
+    .search-input-container input {
+        font-size: 16px;
+        padding: 16px 50px 16px 16px;
+    }
+    
+    .search-results {
+        padding: 30px 20px;
+    }
+    
+    .search-results-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 16px;
+    }
+    
+    .search-result-poster {
+        height: 225px;
+    }
+    
+    .search-result-info {
+        padding: 12px;
+    }
+    
+    .search-result-title {
+        font-size: 14px;
+    }
+    
+    .suggestion-tags {
+        gap: 8px;
+    }
+    
+    .suggestion-tag {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .search-results-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 12px;
+    }
+    
+    .search-result-poster {
+        height: 180px;
+    }
+    
+    .search-result-title {
+        font-size: 13px;
+    }
+}
+
+/* OTT 드롭다운 컴포넌트 */
+.ott-dropdown {
+    position: relative;
+    display: inline-block;
+    min-width: 200px;
+}
+
+.ott-dropdown-header {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-lg);
+    user-select: none;
+}
+
+.ott-dropdown-header:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-xl);
+}
+
+.ott-dropdown-header i:last-child {
+    transition: transform 0.3s ease;
+}
+
+.ott-dropdown.active .ott-dropdown-header i:last-child {
+    transform: rotate(180deg);
+}
+
+.ott-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    box-shadow: var(--shadow-xl);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(20px);
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.ott-dropdown.active .ott-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.ott-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.ott-option:last-child {
+    border-bottom: none;
+}
+
+.ott-option:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--accent-color);
+    transform: translateX(4px);
+}
+
+.ott-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.ott-option span {
+    flex: 1;
+    font-weight: 500;
+}
+
+.ott-option i:last-child {
+    opacity: 0.6;
+    font-size: 12px;
+    transition: opacity 0.3s ease;
+}
+
+.ott-option:hover i:last-child {
+    opacity: 1;
+}
+
+/* OTT 아이콘 기본 스타일 */
+.ott-icon[alt*="Netflix"] {
+    background: #E50914;
+}
+
+.ott-icon[alt*="Disney"] {
+    background: #113CCF;
+}
+
+.ott-icon[alt*="Amazon"] {
+    background: #00A8E1;
+}
+
+.ott-icon[alt*="Apple"] {
+    background: #000000;
+}
+
+.ott-icon[alt*="Wavve"] {
+    background: #1E88E5;
+}
+
+.ott-icon[alt*="Tving"] {
+    background: #FF6B35;
+}
+
+.ott-icon[alt*="Watcha"] {
+    background: #FF0558;
+}
+
+.ott-icon[alt*="Coupang"] {
+    background: #FA622F;
+}
+
+/* OTT 정보 없음 상태 */
+.btn-play:disabled {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.5);
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.btn-play:disabled:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* OTT 배지 */
+.ott-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: var(--gradient-primary);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 10;
+}
+
+/* OTT 드롭다운 모바일 반응형 */
+@media (max-width: 768px) {
+    .ott-dropdown {
+        min-width: 180px;
+    }
+    
+    .ott-dropdown-header {
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+    
+    .ott-option {
+        padding: 10px 12px;
+        gap: 8px;
+    }
+    
+    .ott-icon {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ott-dropdown {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .ott-dropdown-menu {
+        left: 0;
+        right: 0;
+    }
+}
+
+/* 좋아요/싫어요/찜 버튼 active 상태 */
+.btn-wishlist.active {
+    background: linear-gradient(135deg, #ffc107, #ff9500) !important;
+    color: white !important;
+    border-color: #ff9500 !important;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
+}
+
+.btn-like.active {
+    background: linear-gradient(135deg, #10b981, #059669) !important;
+    color: white !important;
+    border-color: #047857 !important;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+.btn-dislike.active {
+    background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+    color: white !important;
+    border-color: #b91c1c !important;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+.btn-watch-together.active {
+    background: linear-gradient(135deg, #3b82f6, #2563eb) !important;
+    color: white !important;
+    border-color: #1d4ed8 !important;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.btn-wishlist.active:hover,
+.btn-like.active:hover,
+.btn-dislike.active:hover,
+.btn-watch-together.active:hover {
+    transform: scale(1.08);
+}
+
+/* 평가 메시지 스타일 */
+.evaluation-message {
+    padding: 12px 20px;
+    margin: 15px 0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    animation: slideInFromTop 0.3s ease-out;
+    text-align: center;
+}
+
+.evaluation-message.success {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    border-left: 4px solid #047857;
+}
+
+.evaluation-message.error {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+    border-left: 4px solid #b91c1c;
+}
+
+.evaluation-message.info {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    border-left: 4px solid #1d4ed8;
+}
+
+@keyframes slideInFromTop {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 버튼 비활성 상태에서 호버 효과는 위의 개별 스타일에서 처리됨 */ 
+
+/* 반응형 디자인 개선 */
+@media (max-width: 768px) {
+    .modal-btn {
+        max-width: none;
+        width: 100%;
+    }
+    
+    .btn-like, .btn-dislike {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+    
+    .movie-actions {
+        gap: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .btn-like, .btn-dislike {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+    }
+}
+
+/* 모달 액션 버튼 스타일 */
+.movie-actions {
+    margin: 24px 0;
+}
+
+.action-buttons-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* 모달 버튼 공통 스타일 */
+.action-buttons-row .btn {
+    min-width: 160px;
+    height: 48px;
+    padding: 12px 24px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    overflow: hidden; /* 넘치는 텍스트 숨김 */
+    text-overflow: ellipsis; /* 넘치는 텍스트에 ... 표시 */
+}
+
+/* Watch-together 버튼과 찜하기 버튼 너비 조정 */
+.watch-together-button,
+.wishlist-button {
+    min-width: 180px; /* 버튼 최소 너비 증가 */
+    flex-shrink: 0; /* 버튼 크기 축소 방지 */
+}
+
+/* 좋아요/싫어요 버튼 크기 조정 */
+.btn-like,
+.btn-dislike {
+    min-width: 48px !important;
+    width: 48px !important;
+    height: 48px !important;
+    padding: 12px !important;
+    font-size: 20px !important;
+    border-radius: 50% !important;
+}
+
+/* 시청하기 버튼 - 드롭다운 스타일 */
+.play-button {
+    background: linear-gradient(90deg, #4A90E2 0%, #7B68EE 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    justify-content: space-between !important;
+}
+
+.play-button::after {
+    content: '▼';
+    font-size: 12px;
+    margin-left: 8px;
+}
+
+.play-button:hover {
+    background: linear-gradient(90deg, #357ABD 0%, #6A5ACD 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+}
+
+/* 같이보기 버튼 - 그라데이션 스타일 */
+.watch-together-button {
+    background: linear-gradient(90deg, #00C9A7 0%, #F39C12 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    min-width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.watch-together-button:hover {
+    background: linear-gradient(90deg, #00A085 0%, #E67E22 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 201, 167, 0.3);
+}
+
+/* 평가 메시지 스타일 */
+.evaluation-message {
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin: 12px 0;
+    font-size: 14px;
+    animation: slideIn 0.3s ease;
+}
+
+.evaluation-message.success {
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    color: #22c55e;
+}
+
+.evaluation-message.info {
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    color: #3b82f6;
+}
+
+.evaluation-message.error {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .action-buttons-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    .action-buttons-row .btn {
+        width: 100%;
+        min-width: unset;
+        height: 44px;
+        padding: 10px 20px;
+        font-size: 15px;
+    }
+
+    /* 모바일에서도 좋아요/싫어요 버튼 크기 유지 */
+    .btn-like,
+    .btn-dislike {
+        min-width: 44px !important;
+        width: 44px !important;
+        height: 44px !important;
+        padding: 10px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .action-buttons-row {
+        gap: 6px;
+    }
+
+    .action-buttons-row .btn {
+        height: 40px;
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    /* 작은 화면에서 좋아요/싫어요 버튼 크기 조정 */
+    .btn-like,
+    .btn-dislike {
+        min-width: 40px !important;
+        width: 40px !important;
+        height: 40px !important;
+        padding: 8px !important;
+    }
+}
+
+/* 그리드 아이템 스타일 */
+.wishlist-grid-item {
+    position: relative;
+    background: var(--card-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.wishlist-grid-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.wishlist-grid-item img {
+    width: 100%;
+    aspect-ratio: 2/3;
+    object-fit: cover;
+    border-radius: 12px 12px 0 0;
+}
+
+.grid-item-info {
+    padding: 16px;
+    background: linear-gradient(to bottom, rgba(30, 41, 59, 0.95), rgba(30, 41, 59, 0.98));
+    border-radius: 0 0 12px 12px;
+}
+
+.grid-item-info h3 {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.grid-item-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.grid-item-meta span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* 그리드 아이템 액션 버튼 스타일 */
+.grid-item-actions {
+    display: flex;
+    gap: 12px;
+    margin: 16px 0;
+}
+
+.grid-item-actions button {
+    flex: 1;
+    min-height: 36px;
+    min-width: 100px; /* 최소 너비 추가 */
+    padding: 8px 12px; /* 좌우 패딩 축소 */
+    border: none;
+    border-radius: 8px;
+    font-size: 13px; /* 폰트 크기 조정 */
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px; /* 아이콘과 텍스트 사이 간격 축소 */
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    text-overflow: ellipsis; /* 넘치는 텍스트 처리 */
+}
+
+/* 제거 버튼 스타일 */
+.grid-item-actions .remove-btn {
+    background: linear-gradient(135deg, #ff4757, #ff6b81);
+    color: white;
+    box-shadow: 0 2px 4px rgba(255, 71, 87, 0.3);
+}
+
+.grid-item-actions .remove-btn:hover {
+    background: linear-gradient(135deg, #ff6b81, #ff4757);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(255, 71, 87, 0.4);
+}
+
+.grid-item-actions .remove-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(255, 71, 87, 0.3);
+}
+
+/* 시청 표시 버튼 스타일 */
+.grid-item-actions .watched-btn {
+    background: linear-gradient(135deg, #20bf6b, #26de81);
+    color: white;
+    box-shadow: 0 2px 4px rgba(32, 191, 107, 0.3);
+}
+
+.grid-item-actions .watched-btn:hover {
+    background: linear-gradient(135deg, #26de81, #20bf6b);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(32, 191, 107, 0.4);
+}
+
+.grid-item-actions .watched-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(32, 191, 107, 0.3);
+}
+
+/* 시청 완료된 상태의 버튼 스타일 */
+.grid-item-actions .watched-btn.watched {
+    background: linear-gradient(135deg, #2d3436, #636e72);
+    box-shadow: 0 2px 4px rgba(45, 52, 54, 0.3);
+}
+
+.grid-item-actions .watched-btn.watched:hover {
+    background: linear-gradient(135deg, #636e72, #2d3436);
+    box-shadow: 0 4px 8px rgba(45, 52, 54, 0.4);
+}
+
+/* 버튼 내 아이콘 스타일 */
+.grid-item-actions button::before {
+    font-size: 14px; /* 아이콘 크기 축소 */
+    flex-shrink: 0; /* 아이콘 크기 고정 */
+}
+
+.grid-item-actions .remove-btn::before {
+    content: "🗑️";
+}
+
+.grid-item-actions .watched-btn::before {
+    content: "✓";
+}
+
+.grid-item-actions .watched-btn.watched::before {
+    content: "✓";
+    color: #26de81;
+}
+
+/* 버튼 리플 이펙트 */
+.grid-item-actions button::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+}
+
+.grid-item-actions button:focus:not(:active)::after {
+    animation: ripple 1s ease-out;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+    }
+    20% {
+        transform: scale(25, 25);
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 0;
+        transform: scale(40, 40);
+    }
+}
+
+/* 시청 완료 상태 표시 */
+.wishlist-grid-item.watched::after {
+    content: "✓";
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 24px;
+    height: 24px;
+    background: var(--success-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
