@@ -17,7 +17,7 @@ AI 기반 영화/TV 추천 통합 모노레포입니다. Spring MVC 웹앱과 3�
 
 ### 🧭 아키텍처
 
-```mermaid
+```
 flowchart LR
   A[브라우저/JSP (Opuscine)] -->|REST| B[cloudtype-proxy (8000)]
   B -->|자연어 처리| C[llm-server (8001)]
