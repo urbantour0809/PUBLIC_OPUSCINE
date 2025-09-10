@@ -1,181 +1,100 @@
-### 🎬 OpusCine
+# 🎬 OpusCine – AI 추천 영화 플랫폼
 
-AI 기반 영화/TV 추천 통합 모노레포입니다. Spring MVC 웹앱과 3개의 Python 서비스(프록시, TMDB API 서버, LLM 서버)로 구성되어 엔드투엔드 추천 경험을 제공합니다.
-
----
-
-### 📦 모듈 구성
-
-| 모듈 | 기술 스택 | 기본 포트 | 역할 |
-|---|---|---:|---|
-| `Opuscine/` | Java 17, Spring 5.3, Spring Security, MyBatis, MySQL, JSP | 8080 (Tomcat) | 웹 UI, 로그인/회원, 마이리스트, WebSocket 등 프론트엔드/백엔드 MVC |
-| `cloudtype-proxy/` | Python, FastAPI, httpx, Redis(optional) | 8000 | Spring과 백엔드 서비스(LLM, API) 사이 프록시. 로컬 JSON/Redis를 활용한 OTT 링크 매칭 및 캐싱 |
-| `api-server/` | Python, FastAPI, Redis, httpx | 8002 | TMDB 기반 영화/장르 조회, 상세/관리 API, Redis 초기화/상태 |
-| `llm-server/` | Python, FastAPI, Transformers, PyTorch | 8001 | 자연어를 TMDB 파라미터(또는 추천 결과)로 변환하는 LLM 서버 (EXAONE 3.5-7.8B) |
+> 한국어 특화 LLM(Exaone 3.5)을 활용한 **대화형 영화 추천 서비스**  
+> Netflix 스타일 UI/UX와 **실시간 채팅 기능**으로 단순 추천을 넘어 **소셜 기반 스트리밍 경험**을 제공합니다.
 
 ---
 
-### 🧭 아키텍처
-
-```mermaid
-flowchart LR
-  A[브라우저/JSP (Opuscine)] -->|REST| B[cloudtype-proxy (8000)]
-  B -->|자연어 처리| C[llm-server (8001)]
-  B -->|TMDB 검색| D[api-server (8002)]
-  D -->|영화·장르| E[(TMDB API)]
-  D <-->|캐시| F[(Redis)]
-  B -->|OTT 링크 조회| G[(Local JSON 데이터)]
-```
-
-- **데이터 소스 우선순위**: Local JSON → Redis 캐시 → 외부 API(TMDB)
-- **권장 실행 순서**: Redis → llm-server → api-server → cloudtype-proxy → Opuscine
+## 🎥 시연 영상
+<video src="assets/demo.mp4" controls width="600"></video>  
+👉 영상이 재생되지 않을 경우 [여기](assets/demo.mp4)를 클릭하세요.
 
 ---
 
-### ⚡ 빠른 시작 (로컬)
-
-사전 요구사항
-- **JDK 17**, **Maven**, **Python 3.11+**, **Redis 6+**
-- (선택) NVIDIA GPU + CUDA 11.8+ (LLM 가속)
-
-1) Redis 시작
-- Docker: `docker run -d --name redis -p 6379:6379 redis:7-alpine`
-- Windows(로컬 설치): `redis-server.exe`
-
-2) llm-server (8001)
-- 폴더 이동: `cd llm-server`
-- 가상환경/의존성: 
-  - PowerShell: `python -m venv .venv; .\.venv\Scripts\Activate.ps1; pip install -r requirements.txt`
-- 환경변수(.env 예시)
-  ```env
-  MODEL_NAME=LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct
-  HOST=0.0.0.0
-  PORT=8001
-  LOG_LEVEL=INFO
-  ```
-- 실행: `python run.py`
-
-3) api-server (8002)
-- 폴더 이동: `cd api-server`
-- 가상환경/의존성 설치 후 실행
-- 환경변수(.env 예시)
-  ```env
-  TMDB_API_KEY=YOUR_TMDB_API_KEY
-  TMDB_BASE_URL=https://api.themoviedb.org/3
-  REDIS_HOST=localhost
-  REDIS_PORT=6379
-  HOST=0.0.0.0
-  PORT=8002
-  ```
-- 실행: `python run.py`
-- (선택) Redis 초기화: `POST /admin/init-redis`
-
-4) cloudtype-proxy (8000)
-- 폴더 이동: `cd cloudtype-proxy`
-- 가상환경/의존성 설치 후 실행
-- 데이터 파일 확인: `data/movie/tmdb_movies_hybrid_final.json`, `data/tv series/tmdb_tv_series_final.json`
-- 환경변수(.env 예시)
-  ```env
-  LLM_SERVER_URL=http://localhost:8001
-  API_SERVER_URL=http://localhost:8002
-  USE_LOCAL_DATA=true
-  FALLBACK_TO_REDIS=true
-  HOST=0.0.0.0
-  PORT=8000
-  ```
-- 실행: `python run.py`
-
-5) Opuscine (8080)
-- 폴더 이동: `cd Opuscine`
-- 빌드: `mvn clean package`
-- 배포: 생성된 `OpusCine.war`를 Tomcat에 배치 (기본 컨텍스트 `/OpusCine`)
-- 접속: `http://localhost:8080/OpusCine` (환경에 따라 `/` 또는 `/OpusCine`)
+## 📸 스크린샷
+> 프로젝트 주요 화면 스크린샷을 추가하세요.  
+예시:
+![홈 화면](assets/home.png)
+![AI 추천](assets/ai.png)
+![검색 화면](assets/search.png)
+![상세보기 화면](assets/detail.png)
 
 ---
 
-### 🔑 환경변수 요약
-
-- **공통 (프록시/연동)**
-  - `LLM_SERVER_URL`: 예) `http://localhost:8001`
-  - `API_SERVER_URL`: 예) `http://localhost:8002`
-- **api-server**
-  - `TMDB_API_KEY`(필수), `REDIS_HOST`, `REDIS_PORT`, `CACHE_TTL`, `CORS_ORIGINS`
-- **cloudtype-proxy**
-  - `USE_LOCAL_DATA`, `FALLBACK_TO_REDIS`, `REDIS_HOST/PORT/PASSWORD`
-- **llm-server**
-  - `MODEL_NAME`, `CUDA_VISIBLE_DEVICES`, `TORCH_DTYPE`, `PORT`
-- **Opuscine(Spring)**
-  - OAuth 클라이언트/시크릿, DB 접속 정보 등은 코드에 하드코딩하지 말고 외부 설정으로 주입 권장
+## 🗂 프로젝트 개요
+- **기간**: 2025.05 ~ 2025.07  
+- **역할**:  
+  - Python 기반 LLM 응답 처리 및 프롬프트 설계  
+  - Cloudtype 연동 및 Linux 기반 LLM 서버 환경 구축  
+  - TMDB API 연동 및 영화 정보 데이터 처리 로직 구현  
+  - 프론트엔드(UI/UX) 작업 및 디자인  
+  - Redis 캐싱 적용  
 
 ---
 
-### 📡 핵심 API 요약
-
-- cloudtype-proxy (8000)
-  - `POST /api/movies/recommend` — 자연어 요청으로 추천 목록 반환(LLM→API→OTT 링크 통합)
-  - `GET /api/movies/{movie_id}/ott` — 영화 OTT 링크 조회(캐시 활용)
-  - `GET /health` — 상세 헬스 체크
-
-- api-server (8002)
-  - `POST /tmdb-query` — TMDB 검색(LLM 포맷 지원), 결과에 OTT 링크 주입
-  - `GET /movie/{id}` — 영화 상세 + OTT 링크
-  - `GET /genres` — 장르 목록
-  - `GET /health`, `GET /admin/status`, `POST /admin/init-redis`
-
-- llm-server (8001)
-  - `POST /llm` — 자연어 → TMDB 파라미터 변환(기본)
-  - (환경에 따라) `POST /movie-recommend` — 완성된 추천 결과 반환 버전 사용 가능
-  - `GET /health`
-
-샘플 요청
-```bash
-# 추천 (proxy)
-curl -X POST http://localhost:8000/api/movies/recommend \
-  -H "Content-Type: application/json" \
-  -d '{"message": "2024년 액션 영화 추천", "page":1, "limit":20}'
-
-# 장르 (api)
-curl http://localhost:8002/genres
-
-# LLM 파싱 (llm)
-curl -X POST http://localhost:8001/llm \
-  -H "Content-Type: application/json" \
-  -d '{"message": "봉준호 감독 최신 영화"}'
-```
+## 🚀 동기
+OTT 서비스가 늘어나면서, 원하는 콘텐츠를 찾기 위해 여러 플랫폼을 이동해야 하는 불편함이 있습니다.  
+OpusCine은 **TMDB API + LLM**을 활용해 한 곳에서 **개인 맞춤형 영화 추천과 OTT 연동**을 제공하고자 개발되었습니다.  
 
 ---
 
-### 🚀 배포 힌트
+## ⚙️ 기술 스택
 
-- Cloudtype(Python 서비스)
-  - Build: `pip install -r requirements.txt`
-  - Start: `python run.py`
-  - Port: `8000/8001/8002` (서비스별 상이)
-  - 환경변수에 외부 URL/키를 주입
-- Opuscine(Spring WAR)
-  - Tomcat 9+에 배포, 컨텍스트 경로 확인(`/OpusCine`)
-  - OAuth 리다이렉트 URI와 실제 서비스 도메인 일치 필요
-
----
-
-### 🛡️ 보안 & 운영 체크리스트
-
-- **비밀정보 하드코딩 금지**: OAuth 클라이언트/시크릿, 이메일 계정, TMDB 키 등은 `.env`/서버 환경변수로 관리하고 Git에 올리지 마세요.
-- **CORS 제한**: 운영 환경에서는 `allow_origins`를 실제 프론트 도메인으로 제한하세요.
-- **포트/방화벽**: 8000/8001/8002/8080 노출 범위 점검.
-- **로그**: 각 서비스의 `*.log` 파일 로테이션/보존 정책 설정 권장.
+| 영역 | 기술 |
+|------|------|
+| **Backend** | ![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white) ![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white) ![Spring](https://img.shields.io/badge/Spring-6DB33F?logo=spring&logoColor=white) |
+| **Frontend** | ![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=black) |
+| **Database & Cache** | ![Redis](https://img.shields.io/badge/Redis-DC382D?logo=redis&logoColor=white) ![MyBatis](https://img.shields.io/badge/MyBatis-000000?logoColor=white) |
+| **AI/ML** | ![Exaone](https://img.shields.io/badge/Exaone%203.5-AI-blue) ![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?logo=pytorch&logoColor=white) ![TensorFlow](https://img.shields.io/badge/TensorFlow-FF6F00?logo=tensorflow&logoColor=white) |
+| **Infra** | ![Cloudtype](https://img.shields.io/badge/Cloudtype-4285F4?logo=googlecloud&logoColor=white) ![Linux](https://img.shields.io/badge/Linux-FCC624?logo=linux&logoColor=black) ![Ngrok](https://img.shields.io/badge/Ngrok-1F1F1F?logo=ngrok&logoColor=white) |
 
 ---
 
-### 🧪 트러블슈팅 빠른 점검
-
-- LLM 연결 실패 → `LLM_SERVER_URL/health` 확인, GPU/torch 설치 확인
-- TMDB 실패 → `TMDB_API_KEY` 유효성, 할당량/네트워크 확인
-- OTT 링크 없음 → `cloudtype-proxy/data` 파일 존재/형식 확인, Redis 키 확인
-- CORS 에러 → 프록시/웹앱 CORS 설정 재검토
+## 🔗 프로젝트 구조
+- **Opuscine**: Spring 백엔드 + 프론트엔드  
+- **Api-server**: TMDB API 서버  
+- **Cloudtype-proxy**: Spring ↔ LLM 연결 프록시 서버  
+- **LLM-server**: AI 추천 전용 서버  
 
 ---
 
-### 📄 라이선스
+## 🛠 설계 의도와 선택 기술
 
-- 모노레포 전반 라이선스 및 각 서브프로젝트 라이선스는 각 디렉터리의 README/라이선스 표기를 따릅니다.
+### 1. 프록시 서버, LLM 서버, API 서버를 분리한 이유
+- Windows 환경에서 PyTorch 실행을 위해 Linux 기반 LLM 서버가 필요했습니다.  
+- NGROK을 활용하여 **Spring → Proxy → NGROK → LLM** 구조를 설계했습니다.  
+- TMDB API 요청 부하를 줄이기 위해 별도의 **api-server**를 두어 LLM 서버의 안정성을 확보했습니다.
+
+### 2. 왜 Exaone을 사용했는가?
+- 한국어 환경에 최적화된 LLM 모델이 필요했습니다.  
+- Exaone 3.5는 한국어 대화형 AI 성능이 우수하여 본 프로젝트의 목적에 가장 적합했습니다.
+
+### 3. Redis를 사용한 이유
+- TMDB에서 가져온 OTT 링크 데이터를 반복 요청 시 빠르게 제공하기 위해 캐싱 구조를 도입했습니다.  
+- Redis를 활용해 서버 부하를 줄이고, 사용자 응답 속도를 최적화했습니다.
+
+---
+
+## ✨ 주요 기능
+- **AI 추천**: 대화형 LLM을 통한 맞춤형 영화 추천  
+- **실시간 같이 보기**: Tomcat WebSocket 기반 동시 시청 + 채팅  
+- **소셜 로그인**: Google, Naver 계정 로그인 지원  
+- **검색 & 필터**: 제목/장르/배우 기반 정교한 검색  
+- **OTT 연동**: Proxy 서버 기반 외부 OTT 상세 페이지 연결  
+- **시청 기록 관리**: Redis 캐싱으로 빠른 기록 확인  
+
+---
+
+## 👥 팀원
+- **박원빈** – Python LLM 처리, 서버 구축, 프론트엔드  
+- **정혜린** – Spring 백엔드, DB 설계  
+
+---
+
+## 📌 배운 점
+- **양자화(Quantization)**를 통해 대형 LLM을 제한된 VRAM 환경에서 구동  
+- **Fallback 설계**로 GPU 부족 시 CPU로 전환하여 서비스 연속성 확보  
+- **Prompt Engineering**을 통한 모델 이해도 향상  
+- **Redis 캐싱**으로 사용자 경험 속도 최적화  
+
+---
